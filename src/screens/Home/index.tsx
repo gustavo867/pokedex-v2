@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Dimensions } from "react-native";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { State } from "../../../App";
 import FIlters from "../../components/FIlters";
-import { fetchPokemonDetail, fetchPokemons } from "../../redux/actions";
+import { fetchPokemons } from "../../redux/actions";
 import PokeBall from "../../svgs/pokeball";
 import Item from "./Item";
 
 import * as S from "./styles";
 
-const { width, height } = Dimensions.get("window");
-
 const Home: React.FC = () => {
-  const [loading, setLoading] = useState<boolean>();
-
   const pokemons = useSelector((state: State) => state.pokeStore.pokemons);
   const dispatch = useDispatch();
 
@@ -37,7 +32,7 @@ const Home: React.FC = () => {
       </S.SearchContainer>
       <S.Pokemons
         data={pokemons}
-        keyExtractor={(item: any, index: number) => index.toString()}
+        keyExtractor={(item: any, index: number) => item.id.toString()}
         renderItem={({ item }: any) => <Item {...item} />}
         contentContainerStyle={{
           alignItems: "center",

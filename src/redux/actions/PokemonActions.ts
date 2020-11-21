@@ -37,12 +37,14 @@ export const fetchPokemons = (
           id: detailRes.data.id,
           color: detailRes.data.color.name,
           types: types.data.types,
+          name: item.name,
+          url: item.url,
         };
 
         if (detailRes.data.id === 20) {
           colorsArray.push(data);
           dispatch({
-            type: "SET_POKEMON",
+            type: "SET_POKEMONS",
             data: colorsArray,
           });
         } else {
@@ -51,11 +53,6 @@ export const fetchPokemons = (
           }
           colorsArray.push(data);
         }
-      });
-
-      dispatch({
-        type: "SET_POKEMONS",
-        data: res.data.results,
       });
 
       dispatch({

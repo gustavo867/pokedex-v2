@@ -8,9 +8,12 @@ import store from "./src/redux/store";
 import { useFonts } from "expo-font";
 import { AppLoading } from "expo";
 
-interface Poke {
+export interface Poke {
   name: string;
   url: string;
+  id: number;
+  color: string;
+  types: Types[];
 }
 
 export interface Types {
@@ -24,8 +27,8 @@ export interface Types {
 export interface State {
   pokeStore: {
     pokemons: Poke[] | undefined;
-    prevUrl: "" | null;
-    nextUrl: "" | null;
+    prevUrl: "" | undefined;
+    nextUrl: "" | undefined;
     pokemon: [
       {
         id: number;

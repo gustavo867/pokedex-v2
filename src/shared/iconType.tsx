@@ -1,0 +1,42 @@
+import Bug from "../svgs/types/bug";
+import Dark from "../svgs/types/dark";
+import Dragon from "../svgs/types/dragon";
+import Eletric from "../svgs/types/eletric";
+import Fairy from "../svgs/types/fairy";
+import Fighting from "../svgs/types/fighting";
+import Fire from "../svgs/types/fire";
+import Flying from "../svgs/types/flying";
+import Ghost from "../svgs/types/ghost";
+import Grass from "../svgs/types/grass";
+import Ground from "../svgs/types/ground";
+import Ice from "../svgs/types/ice";
+import Normal from "../svgs/types/normal";
+import Poison from "../svgs/types/poison";
+import Psychic from "../svgs/types/psychic";
+import Rock from "../svgs/types/rock";
+import Steel from "../svgs/types/steel";
+import Water from "../svgs/types/water";
+
+const IconType = (type: string) => {
+  if (type === "bug") return Bug;
+  if (type === "dark") return Dark;
+  if (type === "dragon") return Dragon;
+  if (type === "eletric") return Eletric;
+  if (type === "fairy") return Fairy;
+  if (type === "fighting") return Fighting;
+  if (type === "fire") return Fire;
+  if (type === "flying") return Flying;
+  if (type === "ghost") return Ghost;
+  if (type === "grass") return Grass;
+  if (type === "ground") return Ground;
+  if (type === "ice") return Ice;
+  if (type === "normal") return Normal;
+  if (type === "poison") return Poison;
+  if (type === "psychic") return Psychic;
+  if (type === "rock") return Rock;
+  if (type === "steel") return Steel;
+  if (type === "water") return Water;
+  return Dark;
+};
+
+export default IconType;
