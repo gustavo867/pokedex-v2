@@ -1,21 +1,56 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import Routes from "./src/routes";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import { Provider } from "react-redux";
+import store from "./src/redux/store";
+
+import { useFonts } from "expo-font";
+import { AppLoading } from "expo";
+
+interface Poke {
+  name: string;
+  url: string;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export interface Types {
+  slot: number;
+  type: {
+    name: string;
+    url: string;
+  };
+}
+
+export interface State {
+  pokeStore: {
+    pokemons: Poke[] | undefined;
+    prevUrl: "" | null;
+    nextUrl: "" | null;
+    pokemon: [
+      {
+        id: number;
+        color: string;
+        types: Types[];
+      }
+    ];
+  };
+}
+
+export default function App() {
+  const [fontsLoaded] = useFonts({
+    SF_Bold: require("./src/assets/fonts/sf-pro-display-bold.ttf"),
+    SF_Medium: require("./src/assets/fonts/sf-pro-display-medium.ttf"),
+    SF_Regular: require("./src/assets/fonts/sf-pro-display-regular.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
+  return (
+    <Provider store={store}>
+      <StatusBar style="auto" />
+      <Routes />
+    </Provider>
+  );
+}
