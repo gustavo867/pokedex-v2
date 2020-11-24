@@ -11,6 +11,8 @@ import { AppLoading } from "expo";
 export interface Poke {
   name: string;
   url: string;
+  types: Types[];
+  id: number;
 }
 
 export interface Types {

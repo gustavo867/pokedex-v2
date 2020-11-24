@@ -1,17 +1,15 @@
-import React, { useEffect, useState, memo, useMemo } from "react";
-import { Poke, Types } from "../../../App";
+import React, { memo, useMemo } from "react";
+import { Poke } from "../../../App";
 import Color from "../../shared/backgroundColor";
 import ColorType from "../../shared/colorType";
 import IconType from "../../shared/iconType";
 import BackgroundPokeBall from "../../svgs/backgroundPokebal";
 import PaternBackground from "../../svgs/patterBackground";
 
-import axios from "axios";
-
 import * as S from "./styles";
 
 const Item = (item: Poke) => {
-  const [types, setTypes] = useState<Types[] | undefined>(undefined);
+  const { types } = item;
 
   function FormatId(id: number) {
     if (id <= 9) {
@@ -24,9 +22,7 @@ const Item = (item: Poke) => {
     }
   }
 
-  const id = item.url
-    .replace("https://pokeapi.co/api/v2/pokemon/", "")
-    .replace("/", "");
+  const id = item.id.toString();
 
   const imgUrl = useMemo(
     () =>
@@ -38,16 +34,6 @@ const Item = (item: Poke) => {
     types,
     item.name,
   ]);
-
-  async function loadTypes() {
-    const res = await axios.get(item.url);
-
-    setTypes(res.data.types);
-  }
-
-  useEffect(() => {
-    loadTypes();
-  }, []);
 
   const Type = ({ item }: { item: string }) => {
     const Icon = IconType(item);

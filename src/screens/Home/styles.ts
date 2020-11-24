@@ -125,6 +125,7 @@ export const TypeText = styled.Text`
 
 export const Loading = styled.ActivityIndicator.attrs({})`
   margin-bottom: 20px;
+  margin-top: 10px;
 `;
 
 export const LoadButton = styled.TouchableOpacity`

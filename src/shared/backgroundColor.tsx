@@ -7,6 +7,7 @@ import {
   FIRE_COLOR,
   GRASS_COLOR,
   GROUND_COLOR,
+  ICE_TYPE,
   POISON_COLOR,
   PSYCHIC_COLOR,
   ROCK_TYPE,
@@ -17,6 +18,7 @@ const Color = (color: string) => {
   if (color === "dark") return DEFAULT_COLOR;
   if (color === "water") return WATER_COLOR;
   if (color === "rock") return ROCK_TYPE;
+  if (color === "ice") return ICE_TYPE;
   if (color === "steel") return DEFAULT_COLOR;
   if (color === "grass") return GRASS_COLOR;
   if (color === "fairy") return FAIRY_COLOR;

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { fetchPokemons } from "../../redux/actions";
 import { Poke } from "../../../App";
@@ -9,26 +9,28 @@ import Item from "./Item";
 
 import * as S from "./styles";
 import { Alert, Dimensions } from "react-native";
+import { FlatList } from "react-native-gesture-handler";
 
-const { width, height } = Dimensions.get("window");
+const { height } = Dimensions.get("window");
 
 interface Props {
   pokemons: Poke[] | undefined;
-  fetchPokemon: (
-    page: number
-  ) => Promise<{
-    msg: null | string;
-    stat: boolean;
-  }>;
+  fetchPokemon: (limit: number, offset: number) => any;
 }
 
 const Home: React.FC<Props> = ({ pokemons, fetchPokemon }) => {
   const [search, setSearch] = useState("");
   const [refreshing, setRefreshing] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [pageNumber, setPageNumber] = useState(20);
+  const [offset, setOffset] = useState(0);
+
+  const flatlistRef = useRef<FlatList<unknown> | null>(null);
 
   function loadData() {
-    fetchPokemon(150);
+    setPageNumber((state) => state + 20);
+    setOffset((state) => state + 20);
+    fetchPokemon(20, 0);
   }
 
   useEffect(() => {
@@ -38,7 +40,9 @@ const Home: React.FC<Props> = ({ pokemons, fetchPokemon }) => {
   function PreviousList() {
     setRefreshing(true);
 
-    fetchPokemon(150);
+    fetchPokemon(20, 0);
+    setPageNumber(20);
+    setOffset(0);
 
     setRefreshing(false);
 
@@ -48,12 +52,29 @@ const Home: React.FC<Props> = ({ pokemons, fetchPokemon }) => {
   const loadMorePokes = useCallback(async () => {
     setLoadingMore(true);
 
-    const value = await fetchPokemon(1000);
+    console.log(pageNumber);
+    console.log(offset);
 
-    if (value.stat === true) {
-      setLoadingMore(false);
-    } else if (value.msg) {
-      Alert.alert(value.msg);
+    if (flatlistRef.current) {
+      const value = await fetchPokemon(pageNumber, offset);
+
+      if (value.stat === true) {
+        setLoadingMore(false);
+        if (!value.data) {
+          setPageNumber((state) => state - 20);
+          console.log("No data");
+        }
+
+        flatlistRef.current.scrollToOffset({ animated: true, offset: 0 });
+
+        setPageNumber((state) => state + 20);
+        return;
+      } else if (value.msg) {
+        Alert.alert(value.msg);
+        setLoadingMore(false);
+        setPageNumber(20);
+        return;
+      }
     }
   }, []);
 
@@ -85,11 +106,10 @@ const Home: React.FC<Props> = ({ pokemons, fetchPokemon }) => {
         />
       </S.SearchContainer>
       <S.Pokemons
-        data={pokemons?.filter((item) => {
-          return item.name.includes(search) || item;
-        })}
+        ref={flatlistRef as any}
+        data={pokemons}
         keyExtractor={(item: any, index: number) =>
-          index.toExponential(7).toString().toLowerCase()
+          index.toExponential(6).toString()
         }
         renderItem={({ item }: any) => <Item {...item} />}
         contentContainerStyle={{
@@ -103,13 +123,12 @@ const Home: React.FC<Props> = ({ pokemons, fetchPokemon }) => {
         initialNumToRender={5}
         maxToRenderPerBatch={25}
         ListFooterComponent={renderLoading}
-        removeClippedSubviews={true}
+        removeClippedSubviews={false}
         getItemLayout={(data, index) => ({
           length: height * 0.18,
           offset: height * 0.18 * index,
           index,
         })}
-        decelerationRate="fast"
       />
     </S.Container>
   );
@@ -120,6 +139,7 @@ export default connect(
     pokemons: state.pokeStore.pokemons,
   }),
   (dispatch: any) => ({
-    fetchPokemon: (page: number = 15) => dispatch(fetchPokemons(page)),
+    fetchPokemon: (limit = 20, offset = 0) =>
+      dispatch(fetchPokemons(limit, offset)),
   })
 )(Home);

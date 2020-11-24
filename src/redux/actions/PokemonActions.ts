@@ -2,16 +2,56 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import { State } from "../../../App";
 
-export const fetchPokemons = (page = 150) => {
+interface Item {
+  name: string;
+  url: string;
+}
+
+const WithPromise = (item: any) => {
+  return Promise.resolve(item);
+};
+
+export const fetchPokemonDetail = (url: string) => {
+  return async (dispatch: Dispatch, getState: () => State) => {
+    try {
+      const res = await axios.get(url);
+
+      const data = {
+        id: res.data.id,
+        name: res.data.name,
+        types: res.data.types,
+        url: url,
+      };
+
+      return data;
+    } catch (err) {
+      console.log(err);
+      return { stat: false, msg: err.response.data.message };
+    }
+  };
+};
+
+export const fetchPokemons = (limit: number, offset = 0) => {
   return async (dispatch: Dispatch, getState: () => State) => {
     try {
       const res = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon?limit=${page}&offset=0`
+        `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
       );
+
+      const getData = async () => {
+        return Promise.all(
+          res.data.results.map((item: Item) => {
+            const res = dispatch(fetchPokemonDetail(item.url) as any);
+            return res;
+          })
+        );
+      };
+
+      const data = await getData();
 
       dispatch({
         type: "SET_POKEMONS",
-        data: res.data.results,
+        data: data,
       });
 
       dispatch({
@@ -23,26 +63,10 @@ export const fetchPokemons = (page = 150) => {
         type: "SET_PREV_POKEMONS",
         data: res.data.previous,
       });
+
+      return { stat: true, msg: "Sucess fecthing data", data: data };
     } catch (e) {
       return { stat: false, msg: "Error on fetch data" };
-    }
-
-    return { stat: true, msg: null };
-  };
-};
-
-export const fetchPokemonDetail = (url: string) => {
-  return async (dispatch: Dispatch) => {
-    const res = await axios.get(url);
-
-    try {
-      dispatch({
-        type: "SET_POKEMON",
-        data: res.data,
-      });
-    } catch (err) {
-      console.log(err);
-      return { stat: false, msg: err.response.data.message };
     }
   };
 };

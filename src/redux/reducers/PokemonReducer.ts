@@ -8,12 +8,10 @@ export interface PokemonStateType {
   nextUrl: string;
   prevUrl: string;
   loading: boolean;
-  nextPokes: undefined | Array<any>;
 }
 
 const initialState: PokemonStateType = {
   pokemons: [],
-  nextPokes: undefined,
   pokemon: undefined,
   pokemonSpecies: undefined,
   pokemonShapes: undefined,
@@ -25,13 +23,14 @@ const initialState: PokemonStateType = {
 const PokemonReducer: Reducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_POKEMONS":
-      return { ...state, pokemons: action.data };
+      return {
+        ...state,
+        pokemons: action.data,
+      };
     case "SET_POKEMON":
       return { ...state, pokemon: action.data };
     case "SET_NEXT_LIST_POKEMONS":
       return { ...state, nextPokes: action.data };
-    case "SET_NEXT_POKEMONS":
-      return { ...state, nextUrl: action.data };
     case "SET_PREV_POKEMONS":
       return { ...state, prevUrl: action.data };
     case "SET_LOADING":
