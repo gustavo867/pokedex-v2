@@ -7,15 +7,19 @@ export interface PokemonStateType {
   pokemonShapes: undefined | Array<any>;
   nextUrl: string;
   prevUrl: string;
+  loading: boolean;
+  nextPokes: undefined | Array<any>;
 }
 
 const initialState: PokemonStateType = {
-  pokemons: undefined,
+  pokemons: [],
+  nextPokes: undefined,
   pokemon: undefined,
   pokemonSpecies: undefined,
   pokemonShapes: undefined,
   nextUrl: "",
   prevUrl: "",
+  loading: false,
 };
 
 const PokemonReducer: Reducer = (state = initialState, action) => {
@@ -24,10 +28,14 @@ const PokemonReducer: Reducer = (state = initialState, action) => {
       return { ...state, pokemons: action.data };
     case "SET_POKEMON":
       return { ...state, pokemon: action.data };
+    case "SET_NEXT_LIST_POKEMONS":
+      return { ...state, nextPokes: action.data };
     case "SET_NEXT_POKEMONS":
       return { ...state, nextUrl: action.data };
     case "SET_PREV_POKEMONS":
       return { ...state, prevUrl: action.data };
+    case "SET_LOADING":
+      return { ...state, loading: action.data };
     default:
       return state;
   }

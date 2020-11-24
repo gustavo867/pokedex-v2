@@ -24,7 +24,7 @@ const ColorType = (color: string) => {
   if (color === "bug") return BUG_TYPE;
   if (color === "dark") return DARK_TYPE;
   if (color === "dragon") return DRAGON_TYPE;
-  if (color === "eletric") return ELETRIC_TYPE;
+  if (color === "electric") return ELETRIC_TYPE;
   if (color === "fairy") return FAIRY_TYPE;
   if (color === "fighting") return FIGHTING_TYPE;
   if (color === "fire") return FIRE_TYPE;

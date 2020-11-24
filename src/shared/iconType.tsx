@@ -21,7 +21,7 @@ const IconType = (type: string) => {
   if (type === "bug") return Bug;
   if (type === "dark") return Dark;
   if (type === "dragon") return Dragon;
-  if (type === "eletric") return Eletric;
+  if (type === "electric") return Eletric;
   if (type === "fairy") return Fairy;
   if (type === "fighting") return Fighting;
   if (type === "fire") return Fire;

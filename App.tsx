@@ -11,9 +11,6 @@ import { AppLoading } from "expo";
 export interface Poke {
   name: string;
   url: string;
-  id: number;
-  color: string;
-  types: Types[];
 }
 
 export interface Types {
@@ -29,6 +26,8 @@ export interface State {
     pokemons: Poke[] | undefined;
     prevUrl: "" | undefined;
     nextUrl: "" | undefined;
+    loading: boolean;
+    nextPokes: Poke[] | undefined;
     pokemon: [
       {
         id: number;

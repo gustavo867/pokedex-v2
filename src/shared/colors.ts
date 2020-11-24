@@ -26,4 +26,5 @@ export const GROUND_COLOR = "#F78551";
 export const WATER_COLOR = "#58ABF6";
 export const FAIRY_COLOR = "#D04164";
 export const POISON_COLOR = "#9F6E97";
+export const PSYCHIC_COLOR = "#EA5D60";
 export const DEFAULT_COLOR = "#B5B9C4";

@@ -3,9 +3,12 @@ import {
   DEFAULT_COLOR,
   ELETRIC_COLOR,
   FAIRY_COLOR,
+  FIGHTING_COLOR,
   FIRE_COLOR,
   GRASS_COLOR,
+  GROUND_COLOR,
   POISON_COLOR,
+  PSYCHIC_COLOR,
   ROCK_TYPE,
   WATER_COLOR,
 } from "./colors";
@@ -19,9 +22,13 @@ const Color = (color: string) => {
   if (color === "fairy") return FAIRY_COLOR;
   if (color === "poison") return POISON_COLOR;
   if (color === "fire") return FIRE_COLOR;
+  if (color === "ground") return GROUND_COLOR;
   if (color === "white") return DEFAULT_COLOR;
   if (color === "bug") return BUG_COLOR;
-  if (color === "eletric") return ELETRIC_COLOR;
+  if (color === "electric") return ELETRIC_COLOR;
+  if (color === "psychic") return PSYCHIC_COLOR;
+  if (color === "fighting") return FIGHTING_COLOR;
+  if (color === "default") return DEFAULT_COLOR;
   return DEFAULT_COLOR;
 };
 

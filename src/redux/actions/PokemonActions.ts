@@ -1,58 +1,17 @@
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { State, Types } from "../../../App";
+import { State } from "../../../App";
 
-interface PokemonDetail {
-  data: {
-    color: {
-      name: string;
-      url: string;
-    };
-  };
-}
-
-interface ColorsArray {
-  id: number;
-  color: string;
-  types: Types[];
-}
-
-export const fetchPokemons = (
-  url = "https://pokeapi.co/api/v2/pokemon-species"
-) => {
-  return async (dispatch: Dispatch) => {
-    const res = await axios.get(url);
-
+export const fetchPokemons = (page = 150) => {
+  return async (dispatch: Dispatch, getState: () => State) => {
     try {
-      const colorsArray: ColorsArray[] = [];
+      const res = await axios.get(
+        `https://pokeapi.co/api/v2/pokemon?limit=${page}&offset=0`
+      );
 
-      res.data.results.map(async (item: { name: string; url: string }) => {
-        const detailRes = await axios.get(item.url);
-        const types = await axios.get(
-          `https://pokeapi.co/api/v2/pokemon/${detailRes.data.id}`
-        );
-
-        const data = {
-          id: detailRes.data.id,
-          color: detailRes.data.color.name,
-          types: types.data.types,
-          name: item.name,
-          url: item.url,
-        };
-
-        if (detailRes.data.id === 20) {
-          colorsArray.push(data);
-          dispatch({
-            type: "SET_POKEMONS",
-            data: colorsArray,
-          });
-        } else {
-          if (colorsArray.includes(data)) {
-            return;
-          }
-          colorsArray.push(data);
-        }
+      dispatch({
+        type: "SET_POKEMONS",
+        data: res.data.results,
       });
 
       dispatch({
@@ -65,28 +24,25 @@ export const fetchPokemons = (
         data: res.data.previous,
       });
     } catch (e) {
-      return { stat: false, msg: e.response.data.message };
+      return { stat: false, msg: "Error on fetch data" };
     }
 
-    return { state: true, msg: null };
+    return { stat: true, msg: null };
   };
 };
 
 export const fetchPokemonDetail = (url: string) => {
-  return (dispatch: Dispatch) => {
-    axios
-      .get(url)
-      .then((resp: PokemonDetail) => {
-        dispatch({
-          type: "SET_POKEMON",
-          data: resp.data.color,
-        });
+  return async (dispatch: Dispatch) => {
+    const res = await axios.get(url);
 
-        return { stat: true, msg: resp.data };
-      })
-      .catch((err) => {
-        console.log(err);
-        return { stat: false, msg: err.response.data.message };
+    try {
+      dispatch({
+        type: "SET_POKEMON",
+        data: res.data,
       });
+    } catch (err) {
+      console.log(err);
+      return { stat: false, msg: err.response.data.message };
+    }
   };
 };

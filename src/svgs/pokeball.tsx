@@ -34,7 +34,7 @@ const PokeBall: React.FC = () => {
       height={height}
       style={{
         position: "absolute",
-        top: -height * 0.37,
+        top: -height * 0.4,
       }}
     />
   );

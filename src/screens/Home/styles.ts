@@ -21,7 +21,7 @@ export const FiltersContainer = styled.View`
 
 export const SearchContainer = styled.View`
   padding-horizontal: 40px;
-  margin-top: 20px;
+  margin-top: 10px;
 `;
 
 export const Title = styled.Text`
@@ -40,15 +40,16 @@ export const Description = styled.Text`
 
 export const Pokemons = styled.FlatList`
   flex-grow: 1;
+  margin-top: 10px;
 `;
 
 export const PokeContainer = styled.View`
   width: ${width * 0.8}px;
-  height: ${height * 0.17}px;
+  height: ${height * 0.18}px;
   border-radius: 8px;
   background-color: #8bbe8a;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   padding-horizontal: 10px;
   flex-direction: row;
   justify-content: space-between;
@@ -63,7 +64,7 @@ export const LeftContainer = styled.View`
 export const PokeName = styled.Text`
   color: #ffffff;
   font-family: "SF_Regular";
-  font-size: 26px;
+  font-size: 23px;
   margin-left: 10px;
   text-transform: capitalize;
 `;
@@ -75,9 +76,19 @@ export const PokeId = styled.Text`
   margin-left: 10px;
 `;
 
+export const PokeButton = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: space-between;
+  width: ${width * 0.78}px;
+  align-items: center;
+`;
+
 export const PokeImg = styled.Image`
   width: 45%;
   height: 90%;
+  position: absolute;
+  right: 10px;
+  z-index: 1;
 `;
 
 export const Types = styled.FlatList`
@@ -112,7 +123,24 @@ export const TypeText = styled.Text`
   margin-right: 2px;
 `;
 
-export const Loading = styled.ActivityIndicator.attrs({
-  size: "small",
-  color: "#FFF",
-})``;
+export const Loading = styled.ActivityIndicator.attrs({})`
+  margin-bottom: 20px;
+`;
+
+export const LoadButton = styled.TouchableOpacity`
+  height: 100px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  border-color: #000;
+  border-width: 2px;
+  align-items: center;
+  justify-content: center;
+  width: ${width * 0.8}px;
+  border-style: dashed;
+`;
+
+export const LoadText = styled.Text`
+  font-size: 18px;
+  color: grey;
+  font-family: "SF_Bold";
+`;
