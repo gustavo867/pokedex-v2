@@ -31,7 +31,35 @@ export const fetchPokemonDetail = (url: string) => {
   };
 };
 
-export const fetchPokemons = (limit: number, offset = 0) => {
+export const fetchCurrentPoke = (url: string) => {
+  return async (dispatch: Dispatch, getState: () => State) => {
+    try {
+      const res = await axios.get(url);
+
+      const data = {
+        id: res.data.id,
+        name: res.data.name,
+        types: res.data.types,
+        height: res.data.height,
+        weight: res.data.weight,
+        base_experience: res.data.base_experience,
+        abilities: res.data.abilities,
+        stats: res.data.stats,
+      };
+
+      dispatch({
+        type: "SET_POKEMON",
+        data: data,
+      });
+
+      return { stat: true, msg: null };
+    } catch (e) {
+      return { stat: false, msg: e.message };
+    }
+  };
+};
+
+export const fetchPokemons = (limit: number, offset: number) => {
   return async (dispatch: Dispatch, getState: () => State) => {
     try {
       const res = await axios.get(

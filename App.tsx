@@ -23,6 +23,22 @@ export interface Types {
   };
 }
 
+export interface Abilities {
+  slot: number;
+  ability: {
+    name: string;
+    url: string;
+  };
+}
+
+export interface Stats {
+  base_stat: number;
+  stat: {
+    name: string;
+    url: string;
+  };
+}
+
 export interface State {
   pokeStore: {
     pokemons: Poke[] | undefined;
@@ -30,13 +46,16 @@ export interface State {
     nextUrl: "" | undefined;
     loading: boolean;
     nextPokes: Poke[] | undefined;
-    pokemon: [
-      {
-        id: number;
-        color: string;
-        types: Types[];
-      }
-    ];
+    pokemon: {
+      id: number;
+      name: string;
+      types: Types[];
+      height: number;
+      weight: number;
+      abilities: Abilities[];
+      base_experience: number;
+      stats: Stats[];
+    };
   };
 }
 

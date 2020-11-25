@@ -1,1 +1,5 @@
-export { fetchPokemons, fetchPokemonDetail } from "./PokemonActions";
+export {
+  fetchPokemons,
+  fetchPokemonDetail,
+  fetchCurrentPoke,
+} from "./PokemonActions";

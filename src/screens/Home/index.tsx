@@ -30,7 +30,7 @@ const Home: React.FC<Props> = ({ pokemons, fetchPokemon }) => {
   function loadData() {
     setPageNumber((state) => state + 20);
     setOffset((state) => state + 20);
-    fetchPokemon(20, 0);
+    fetchPokemon(30, 0);
   }
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Home: React.FC<Props> = ({ pokemons, fetchPokemon }) => {
   function PreviousList() {
     setRefreshing(true);
 
-    fetchPokemon(20, 0);
+    fetchPokemon(30, 0);
     setPageNumber(20);
     setOffset(0);
 
@@ -56,7 +56,7 @@ const Home: React.FC<Props> = ({ pokemons, fetchPokemon }) => {
     console.log(offset);
 
     if (flatlistRef.current) {
-      const value = await fetchPokemon(pageNumber, offset);
+      const value = await fetchPokemon(30, 0);
 
       if (value.stat === true) {
         setLoadingMore(false);
@@ -120,15 +120,10 @@ const Home: React.FC<Props> = ({ pokemons, fetchPokemon }) => {
         refreshing={refreshing}
         showsVerticalScrollIndicator={false}
         bounces={false}
-        initialNumToRender={5}
-        maxToRenderPerBatch={25}
         ListFooterComponent={renderLoading}
-        removeClippedSubviews={false}
-        getItemLayout={(data, index) => ({
-          length: height * 0.18,
-          offset: height * 0.18 * index,
-          index,
-        })}
+        removeClippedSubviews={true}
+        initialNumToRender={50}
+        maxToRenderPerBatch={100}
       />
     </S.Container>
   );

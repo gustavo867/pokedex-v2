@@ -1,15 +1,26 @@
-import React, { memo, useMemo } from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { memo, useCallback, useMemo } from "react";
+import { useDispatch } from "react-redux";
 import { Poke } from "../../../App";
+import { fetchCurrentPoke } from "../../redux/actions/PokemonActions";
 import Color from "../../shared/backgroundColor";
-import ColorType from "../../shared/colorType";
-import IconType from "../../shared/iconType";
 import BackgroundPokeBall from "../../svgs/backgroundPokebal";
 import PaternBackground from "../../svgs/patterBackground";
 
+import Type from "../../components/Type";
+
 import * as S from "./styles";
+
+interface Stat {
+  stat: boolean;
+  msg: string | null;
+}
 
 const Item = (item: Poke) => {
   const { types } = item;
+
+  const dispatch = useDispatch();
+  const { navigate } = useNavigation();
 
   function FormatId(id: number) {
     if (id <= 9) {
@@ -35,17 +46,6 @@ const Item = (item: Poke) => {
     item.name,
   ]);
 
-  const Type = ({ item }: { item: string }) => {
-    const Icon = IconType(item);
-
-    return (
-      <S.TypeLabel color={ColorType(item)}>
-        <Icon />
-        <S.TypeText> {item}</S.TypeText>
-      </S.TypeLabel>
-    );
-  };
-
   if (types === undefined) {
     return (
       <S.PokeContainer color={Color("default")}>
@@ -65,11 +65,21 @@ const Item = (item: Poke) => {
     );
   }
 
+  const handleCurrentPoke = useCallback(async () => {
+    const stat: Stat = (await dispatch(fetchCurrentPoke(item.url))) as any;
+
+    if (stat.stat === true) {
+      navigate("Detail");
+    } else {
+      return;
+    }
+  }, [item.url]);
+
   return (
     <S.PokeContainer
       color={Color(typesMemo ? typesMemo[0] : types[0].type.name)}
     >
-      <S.PokeButton activeOpacity={0.6}>
+      <S.PokeButton activeOpacity={0.6} onPress={() => handleCurrentPoke()}>
         <BackgroundPokeBall />
         <PaternBackground />
         <S.LeftContainer>
