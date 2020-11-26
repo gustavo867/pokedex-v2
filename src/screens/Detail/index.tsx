@@ -7,6 +7,7 @@ import * as S from "./styles";
 import Type from "../../components/Type";
 import Color from "../../shared/backgroundColor";
 import PaternBackgroundRight from "../../svgs/patternBackgroundRight";
+import About from "./components/About";
 
 const Detail: React.FC = () => {
   const currentPoke = useSelector((state: State) => state.pokeStore.pokemon);
@@ -59,6 +60,7 @@ const Detail: React.FC = () => {
           />
         </S.Column>
       </S.PokeContainer>
+      <About />
     </S.Container>
   );
 };
