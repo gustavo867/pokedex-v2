@@ -14,7 +14,7 @@ const Type: React.FC<Props> = ({ item }) => {
   return (
     <S.TypeLabel color={ColorType(item)}>
       <Icon />
-      <S.TypeText> {item}</S.TypeText>
+      <S.TypeText>{item}</S.TypeText>
     </S.TypeLabel>
   );
 };

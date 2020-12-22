@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 
 const { width, height } = Dimensions.get("window");
 
-interface Props {
+type Props = {
   color?: string;
 }
 
@@ -25,9 +25,9 @@ export const Description = styled.Text`
   color: #747476;
 `;
 
-export const Title = styled.Text`
+export const Title = styled.Text<Props>`
   margin-top: 20px;
-  color: ${(props: Props) => (props.color ? props.color : "#62B957")};
+  color: ${(props) => (props.color ? props.color : "#62B957")};
   font-family: "SF_Bold";
   font-size: 16px;
 `;

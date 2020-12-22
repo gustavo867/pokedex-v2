@@ -1,98 +1,45 @@
-import axios from "axios";
 import { Dispatch } from "redux";
 import { State } from "../../../App";
+import api from "../../services/api";
 
-interface Item {
-  name: string;
-  url: string;
-}
-
-const WithPromise = (item: any) => {
-  return Promise.resolve(item);
-};
-
-export const fetchPokemonDetail = (url: string) => {
+export const fetchCurrentPoke = (id: number) => {
   return async (dispatch: Dispatch, getState: () => State) => {
+    const poke = getState().pokeStore.pokemons;
     try {
-      const res = await axios.get(url);
+      const data = poke?.filter((poke) => poke.id === id);
 
-      const data = {
-        id: res.data.id,
-        name: res.data.name,
-        types: res.data.types,
-        url: url,
-      };
+      console.log(data);
 
-      return data;
-    } catch (err) {
-      console.log(err);
-      return { stat: false, msg: err.response.data.message };
-    }
-  };
-};
-
-export const fetchCurrentPoke = (url: string) => {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    try {
-      const res = await axios.get(url);
-
-      const data = {
-        id: res.data.id,
-        name: res.data.name,
-        types: res.data.types,
-        height: res.data.height,
-        weight: res.data.weight,
-        base_experience: res.data.base_experience,
-        abilities: res.data.abilities,
-        stats: res.data.stats,
-      };
-
-      dispatch({
-        type: "SET_POKEMON",
-        data: data,
-      });
-
-      return { stat: true, msg: null };
+      if (data) {
+        dispatch({
+          type: "SET_POKEMON",
+          data: data[0],
+        });
+        return { stat: true, msg: null };
+      } else {
+        return { stat: false, msg: null };
+      }
     } catch (e) {
       return { stat: false, msg: e.message };
     }
   };
 };
 
-export const fetchPokemons = (limit: number, offset: number) => {
-  return async (dispatch: Dispatch, getState: () => State) => {
+export const fetchPokemons = () => {
+  return async (dispatch: Dispatch) => {
+    dispatch({
+      type: "SET_LOADING",
+      payload: true,
+    });
     try {
-      const res = await axios.get(
-        `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
-      );
-
-      const getData = async () => {
-        return Promise.all(
-          res.data.results.map((item: Item) => {
-            const res = dispatch(fetchPokemonDetail(item.url) as any);
-            return res;
-          })
-        );
-      };
-
-      const data = await getData();
+      const res = await api.get("/");
 
       dispatch({
         type: "SET_POKEMONS",
-        data: data,
+        data: res.data,
       });
 
-      dispatch({
-        type: "SET_NEXT_POKEMONS",
-        data: res.data.next,
-      });
-
-      dispatch({
-        type: "SET_PREV_POKEMONS",
-        data: res.data.previous,
-      });
-
-      return { stat: true, msg: "Sucess fecthing data", data: data };
+      return { stat: true, msg: "Sucess fecthing data", data: res.data };
     } catch (e) {
       return { stat: false, msg: "Error on fetch data" };
     }

@@ -2,21 +2,13 @@ import { Reducer } from "redux";
 
 export interface PokemonStateType {
   pokemons: undefined | Array<any>;
-  pokemon: undefined | Array<any>;
-  pokemonSpecies: undefined | Array<any>;
-  pokemonShapes: undefined | Array<any>;
-  nextUrl: string;
-  prevUrl: string;
+  pokemon: undefined | any;
   loading: boolean;
 }
 
 const initialState: PokemonStateType = {
   pokemons: [],
   pokemon: undefined,
-  pokemonSpecies: undefined,
-  pokemonShapes: undefined,
-  nextUrl: "",
-  prevUrl: "",
   loading: false,
 };
 
@@ -29,12 +21,8 @@ const PokemonReducer: Reducer = (state = initialState, action) => {
       };
     case "SET_POKEMON":
       return { ...state, pokemon: action.data };
-    case "SET_NEXT_LIST_POKEMONS":
-      return { ...state, nextPokes: action.data };
-    case "SET_PREV_POKEMONS":
-      return { ...state, prevUrl: action.data };
     case "SET_LOADING":
-      return { ...state, loading: action.data };
+      return { ...state, loading: action.payload };
     default:
       return state;
   }

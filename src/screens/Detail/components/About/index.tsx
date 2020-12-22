@@ -11,7 +11,7 @@ const About: React.FC = () => {
   return (
     <S.Container>
       <S.Description>{poke.name}</S.Description>
-      <S.Title color={ColorType(poke.types[0].type.name)}>Pokédex Data</S.Title>
+      <S.Title color={ColorType(poke.types[0])}>Pokédex Data</S.Title>
     </S.Container>
   );
 };

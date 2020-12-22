@@ -11,7 +11,7 @@ export const Container = styled.View`
   padding-horizontal: 25px;
   align-items: center;
   flex-direction: row;
-  margin-top: 25px;
+  margin-top: 15px;
 `;
 
 export const SearchInput = styled.TextInput`

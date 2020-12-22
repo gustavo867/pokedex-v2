@@ -1,22 +1,17 @@
-import { Dimensions } from "react-native";
+import { Dimensions, Pressable } from "react-native";
+import CachedImage from "react-native-expo-cached-image";
 import styled from "styled-components/native";
 
 const { width, height } = Dimensions.get("window");
 
-interface Props {
+type Props = {
   color: string;
-}
+};
 
 export const Container = styled.View`
   flex: 1;
   background-color: #ffffff;
   padding-top: 20px;
-`;
-
-export const FiltersContainer = styled.View`
-  margin-top: 42px;
-  align-items: flex-end;
-  justify-content: flex-end;
 `;
 
 export const SearchContainer = styled.View`
@@ -76,14 +71,21 @@ export const PokeId = styled.Text`
   margin-left: 10px;
 `;
 
-export const PokeButton = styled.TouchableOpacity`
+export const V = styled.View`
   flex-direction: row;
   justify-content: space-between;
   width: ${width * 0.78}px;
+  height: ${height * 0.18}px;
   align-items: center;
 `;
 
-export const PokeImg = styled.Image`
+export const PokeButton = styled.TouchableOpacity`
+  width: ${width * 0.78}px;
+  align-items: center;
+  height: ${height * 0.18}px;
+`;
+
+export const PokeImg = styled(CachedImage)`
   width: 45%;
   height: 90%;
   position: absolute;
@@ -102,13 +104,13 @@ export const TypesContainer = styled.View`
   margin-left: 5px;
 `;
 
-export const TypeLabel = styled.View`
+export const TypeLabel = styled.View<Props>`
   align-items: center;
   justify-content: center;
   padding-horizontal: 5px;
   height: 25px;
   border-radius: 3px;
-  background-color: ${(props: Props) => props.color};
+  background-color: ${(props) => props.color};
   margin-horizontal: 5px;
   flex-direction: row;
 `;

@@ -8,30 +8,19 @@ import Type from "../../components/Type";
 import Color from "../../shared/backgroundColor";
 import PaternBackgroundRight from "../../svgs/patternBackgroundRight";
 import About from "./components/About";
+import FormatId from "../../utils";
 
 const Detail: React.FC = () => {
   const currentPoke = useSelector((state: State) => state.pokeStore.pokemon);
 
-  const imgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${currentPoke.id}.png`;
+  const imgUrl = useMemo(() => currentPoke.image, []);
 
-  function FormatId(id: number) {
-    if (id <= 9) {
-      return id.toFixed(2).replace(id.toString(), "").replace(".", "#");
-    }
-    if (id <= 99) {
-      return id.toFixed(1).replace(id.toString(), "").replace(".", "#");
-    } else {
-      return `#`;
-    }
-  }
-
-  const typesMemo = useMemo(
-    () => currentPoke.types.map((item) => item.type.name),
-    [currentPoke.types]
-  );
+  const typesMemo = useMemo(() => currentPoke.types.map((item) => item), [
+    currentPoke.types,
+  ]);
 
   return (
-    <S.Container color={Color(currentPoke.types[0].type.name)}>
+    <S.Container color={Color(currentPoke.types[0])}>
       <PaternBackgroundRight />
       <S.BackgroundTitle>{currentPoke.name}</S.BackgroundTitle>
       <Feather

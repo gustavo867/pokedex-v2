@@ -1,47 +1,33 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { memo, useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
-import { Poke } from "../../../App";
 import { fetchCurrentPoke } from "../../redux/actions/PokemonActions";
 import Color from "../../shared/backgroundColor";
 import BackgroundPokeBall from "../../svgs/backgroundPokebal";
 import PaternBackground from "../../svgs/patterBackground";
+import Pokemon from "../../types/Pokemon";
 
 import Type from "../../components/Type";
 
 import * as S from "./styles";
+import FormatId from "../../utils";
 
 interface Stat {
   stat: boolean;
   msg: string | null;
 }
 
-const Item = (item: Poke) => {
+const Item = (item: Pokemon) => {
   const { types } = item;
 
   const dispatch = useDispatch();
   const { navigate } = useNavigation();
 
-  function FormatId(id: number) {
-    if (id <= 9) {
-      return id.toFixed(2).replace(id.toString(), "").replace(".", "#");
-    }
-    if (id <= 99) {
-      return id.toFixed(1).replace(id.toString(), "").replace(".", "#");
-    } else {
-      return `#`;
-    }
-  }
-
   const id = item.id.toString();
 
-  const imgUrl = useMemo(
-    () =>
-      `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
-    [item.url]
-  );
+  const imgUrl = useMemo(() => item.image, []);
 
-  const typesMemo = useMemo(() => types?.map((item) => item.type.name), [
+  const typesMemo = useMemo(() => types?.map((item) => item), [
     types,
     item.name,
   ]);
@@ -59,56 +45,51 @@ const Item = (item: Poke) => {
           <S.PokeName>{item.name}</S.PokeName>
         </S.LeftContainer>
         <S.PokeButton>
-          <S.PokeImg resizeMode="contain" source={{ uri: imgUrl }} />
+          <S.PokeImg source={{ uri: imgUrl }} resizeMode="contain" />
         </S.PokeButton>
       </S.PokeContainer>
     );
   }
 
   const handleCurrentPoke = useCallback(async () => {
-    const stat: Stat = (await dispatch(fetchCurrentPoke(item.url))) as any;
-
-    if (stat.stat === true) {
-      navigate("Detail");
-    } else {
-      return;
-    }
-  }, [item.url]);
+    dispatch(fetchCurrentPoke(item.id));
+    navigate("Detail");
+  }, [item.id]);
 
   return (
-    <S.PokeContainer
-      color={Color(typesMemo ? typesMemo[0] : types[0].type.name)}
-    >
-      <S.PokeButton activeOpacity={0.6} onPress={() => handleCurrentPoke()}>
-        <BackgroundPokeBall />
-        <PaternBackground />
-        <S.LeftContainer>
-          <S.PokeId>
-            {FormatId(Number(id))}
-            {id}
-          </S.PokeId>
-          <S.PokeName>{item.name}</S.PokeName>
-          <S.TypesContainer>
-            <S.Types
-              data={typesMemo}
-              keyExtractor={(item: any) => item.toLowerCase().trim()}
-              renderItem={({ item }: any) => <Type item={item} />}
-              contentContainerStyle={{
-                flexDirection: "row",
-              }}
-              showsVerticalScrollIndicator={false}
-              bounces={false}
-            />
-          </S.TypesContainer>
-        </S.LeftContainer>
-        <S.PokeImg resizeMode="contain" source={{ uri: imgUrl }} />
+    <S.PokeContainer color={Color(typesMemo ? typesMemo[0] : types[0])}>
+      <S.PokeButton onPress={handleCurrentPoke} activeOpacity={0.8}>
+        <S.V pointerEvents="none">
+          <BackgroundPokeBall />
+          <PaternBackground />
+          <S.LeftContainer>
+            <S.PokeId>
+              {FormatId(Number(id))}
+              {id}
+            </S.PokeId>
+            <S.PokeName>{item.name}</S.PokeName>
+            <S.TypesContainer>
+              <S.Types
+                data={typesMemo}
+                keyExtractor={(item: any) => item.toLowerCase().trim()}
+                renderItem={({ item }: any) => <Type item={item} />}
+                contentContainerStyle={{
+                  flexDirection: "row",
+                }}
+                showsVerticalScrollIndicator={false}
+                bounces={false}
+              />
+            </S.TypesContainer>
+          </S.LeftContainer>
+          <S.PokeImg source={{ uri: imgUrl }} resizeMode="contain" />
+        </S.V>
       </S.PokeButton>
     </S.PokeContainer>
   );
 };
 
-function PokesAreEqual(prevPoke: Poke, nextPoke: Poke) {
-  return prevPoke.name === nextPoke.name && prevPoke.url === nextPoke.url;
+function PokesAreEqual(prevPoke: Pokemon, nextPoke: Pokemon) {
+  return prevPoke.name === nextPoke.name && prevPoke.id === nextPoke.id;
 }
 
 export default memo(Item, PokesAreEqual);
