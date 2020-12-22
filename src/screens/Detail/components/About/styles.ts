@@ -5,7 +5,7 @@ const { width, height } = Dimensions.get("window");
 
 type Props = {
   color?: string;
-}
+};
 
 export const Container = styled.View`
   width: ${width}px;

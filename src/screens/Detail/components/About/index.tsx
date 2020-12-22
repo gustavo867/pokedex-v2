@@ -10,6 +10,7 @@ const About: React.FC = () => {
 
   return (
     <S.Container>
+      <S.Description>About</S.Description>
       <S.Description>{poke.name}</S.Description>
       <S.Title color={ColorType(poke.types[0])}>Pokédex Data</S.Title>
     </S.Container>

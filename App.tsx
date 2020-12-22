@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import store from "./src/redux/store";
 
 import { useFonts } from "expo-font";
-import { AppLoading } from "expo";
+import AppLoading from "expo-app-loading";
 import Pokemon from "./src/types/Pokemon";
 
 export interface State {
